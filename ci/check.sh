@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 compiler="${ALMIDE_BIN:-almide}"
 
-"$compiler" test --allow-no-tests
+"$compiler" test
 "$compiler" build --release -o gramide
 python3 ci/smoke.py
 python3 ci/packages.py

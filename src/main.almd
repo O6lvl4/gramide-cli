@@ -8,6 +8,7 @@
 // `packages()` and one in almide.toml.
 import gramide.cli
 import gramide.package_api
+import gramide.registry
 import gramide_almide
 import gramide_go
 import gramide_rust
@@ -55,4 +56,14 @@ effect fn main() -> Unit = {
     some((cmd, paths)) => cli.report(parallel(cmd, paths)!),
     none => cli.run(cli.Program { name: "gramide", version: VERSION, packages: packages() }, argv),
   }
+}
+
+// The composition is checked here, not only when a binary starts: two
+// packages claiming one extension would make every answer about such a file
+// depend on list order.
+test "the four packages register distinct ids and extensions" {
+  let ps = packages()
+  assert_eq(list.map(ps, (d) => d.id), ["almide", "go", "rust", "python"])
+  assert_eq(registry.conflict(ps), none)
+  assert(list.all(ps, (d) => list.contains(d.capabilities, "check") and list.contains(d.capabilities, "symbols")))
 }
