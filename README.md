@@ -99,7 +99,8 @@ the packages cost nothing: against the last monolithic build, this binary is
 16% smaller and equal or faster on every command with byte-identical output
 ([evidence](docs/evidence/split-comparison.json)). Against tree-sitter, fresh
 process and startup included: a structured read of 800 Go functions takes
-5.4 ms to its 5.9, Python's `inspect.py` 7.2 ms to its 10.8, and the whole
+5.4 ms to its 5.9 and 400 take three quarters of its time, Python's
+`inspect.py` 7.2 ms to its 10.8, and the whole
 Python standard library parses at 0.60x its time; what still loses is a file
 of a few kilobytes, by the 0.2 ms of Rust runtime a C binary does not pay
 ([the board](https://github.com/O6lvl4/gramide/blob/main/bench/README.md)).
