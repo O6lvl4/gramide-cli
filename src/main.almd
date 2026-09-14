@@ -15,7 +15,7 @@ import gramide_rust
 import gramide_python
 import env
 
-let VERSION = "0.2.1"
+let VERSION = "0.2.2"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
