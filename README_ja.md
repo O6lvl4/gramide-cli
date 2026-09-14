@@ -86,11 +86,11 @@ CPython 自身の AST と照合。各文法は既知の数箇所でコンパイ�
 [gramide](https://github.com/O6lvl4/gramide/blob/main/docs/design.md) にあります。パッケージ分割の
 代償はありません。分割前の最後のモノリスと比べて、このバイナリは 16% 小さく、全コマンドで同等か
 より速く、出力は byte 単位で同一です（[証拠](docs/evidence/split-comparison.json)）。tree-sitter
-に対しては、新規プロセス・起動込みで、Go 800 関数の構造化読み取りが 5.4 ミリ秒対 5.9（400 関数なら
-4 分の 3 の時間）、Python の
-`inspect.py` が 7.2 ミリ秒対 10.8、Python 標準ライブラリ全体のパースが 0.60 倍の時間。まだ負ける
-のは数 KB のファイルで、C のバイナリが払わない Rust ランタイムの 0.2 ミリ秒分です
-（[記録](https://github.com/O6lvl4/gramide/blob/main/bench/README.md)）。
+に対しては、新規プロセス・起動込みで、Go 800 関数の構造化読み取りが tree-sitter の 0.78 倍の時間、
+Python の `inspect.py` が 0.70 倍、Python 標準ライブラリ全体のパースが 0.51 倍。数 KB のファイルは
+中央値ではコイントスです。起動の床では gramide の方が C のアダプタより速く始まるのに、Rust のバイナリは
+負荷がかかると床から離れやすく、その背後にあるランタイム初期化 0.2 ミリ秒はコンパイラ側で
+しか外せません（[記録](https://github.com/O6lvl4/gramide/blob/main/bench/README.md)）。
 
 ## 検査
 
