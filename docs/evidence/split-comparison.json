@@ -1,0 +1,41 @@
+{
+ "binary_bytes": {
+  "old": 1750328,
+  "new": 1472400
+ },
+ "go_files": 1500,
+ "medians_seconds": {
+  "check 1500 .go files (fan)": {
+   "old": 0.22929437493439764,
+   "new": 0.19363620807416737,
+   "identical_output": true
+  },
+  "outline inspect.py": {
+   "old": 0.006966416956856847,
+   "new": 0.00671512505505234,
+   "identical_output": true
+  },
+  "symbols typing.py": {
+   "old": 0.012203000020235777,
+   "new": 0.011901166988536716,
+   "identical_output": true
+  },
+  "tags ast.py": {
+   "old": 0.007386833080090582,
+   "new": 0.00702104193624109,
+   "identical_output": true
+  },
+  "check 4 python files": {
+   "old": 0.006109250010922551,
+   "new": 0.006177583010867238,
+   "identical_output": true
+  }
+ },
+ "scope": "the monolithic gramide at 2c082ec against the split binary composed of gramide v0.1.0 and the four language packages at v0.1.0; same commands, alternating order, medians of 3 (check over 1,500 Go files) or 9 samples, process startup included; output byte-identical on every command",
+ "platform": "macOS-15.4.1-arm64-arm-64bit",
+ "go": "go version go1.26.1 darwin/arm64",
+ "python_corpus": "3.11.9",
+ "binary_sha256": {
+  "new": "edc7c9325b65c9a48bd2e9070c1ba1b10c754553cc6eed071e72a3cdd69bbe48"
+ }
+}
