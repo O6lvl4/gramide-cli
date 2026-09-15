@@ -49,13 +49,15 @@ gramide version                   何から作られたか: バイナリ、エ�
 | [gramide-go](https://github.com/O6lvl4/gramide-go) | Go `.go` | `gramide_go` |
 | [gramide-rust](https://github.com/O6lvl4/gramide-rust) | Rust `.rs` | `gramide_rust` |
 | [gramide-python](https://github.com/O6lvl4/gramide-python) | Python 3.14 `.py` `.pyi` | `gramide_python` |
+| [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript `.js` `.mjs` `.cjs` | `gramide_javascript` |
+| [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts` | `gramide_typescript` |
 
 各言語パッケージは、字句解析器、値としての文法、その文法をコンパイルしてコミットした表、
 どのノードが名前を宣言するかの規則、テスト、その言語の参照パーサに対するオラクル、そして
 自前の小さなバイナリ（`gramide_go` は Go だけの `gramide`）を持ちます。だから他の言語なしに
 テスト・計測・リリースできます。何をどのコーパスでカバーしているかは各 README にあります。
 
-ここの `src/main.almd` は 4 つを列挙してエンジンに渡すだけ。言語を足すのはそこに 1 行と
+ここの `src/main.almd` は 6 つを列挙してエンジンに渡すだけ。言語を足すのはそこに 1 行と
 `almide.toml` に 1 行。あるプロジェクトが使う言語だけを出荷するバイナリは、同じファイルの
 リストを短くしたものです。Almide は静的リンクなので、合成はローダではなくファイルです。
 
@@ -67,7 +69,7 @@ almide install github.com/O6lvl4/gramide-cli --name gramide      # ネイティ�
 
 `--name` が要るのは、Almide がバイナリをパッケージ名で名付け、パッケージ名が `gramide_cli`
 だからです。チェックアウトからは `almide build --release -o gramide` で `./gramide` ができます。
-エンジンと 4 つの言語パッケージは `almide.lock` が記録するコミットで取得されます。Almide 0.62 以降が必要です。
+エンジンと 6 つの言語パッケージは `almide.lock` が記録するコミットで取得されます。Almide 0.62 以降が必要です。
 [hew](https://github.com/O6lvl4/hew) は `PATH` 上の `gramide` を見つけてコードを読みます。
 
 ## 現状

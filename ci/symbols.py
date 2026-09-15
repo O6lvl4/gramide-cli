@@ -7,6 +7,8 @@ FIXTURES = {
     'go': ('package p\n\ntype Shape struct{ w int }\n\nfunc (s *Shape) Area() int { return s.w }\n', 'Shape.Area'),
     'rs': ('impl Box {\n #[inline]\n pub fn read(&self) -> i32 { 1 }\n}\n', 'Box::read'),
     'py': ('class Box:\n    def read(self) -> int: ...\n', 'Box.read'),
+    'js': ('export class Box {\n  read() { return /re/.test(this.x) }\n}\n', 'Box.read'),
+    'ts': ('export class Box<T> {\n  read(): T { return this.x as T }\n}\n', 'Box.read'),
 }
 with tempfile.TemporaryDirectory() as tmp:
     for ext, (source, name) in FIXTURES.items():
@@ -25,4 +27,4 @@ with tempfile.TemporaryDirectory() as tmp:
         broken.write_text(source + ')\n')
         p = subprocess.run([str(BIN), 'symbols', str(broken)], capture_output=True, text=True)
         assert p.returncode != 0 and not p.stdout, (ext, p.stdout, p.stderr)
-print('Symbols schema passed: four packages, one contract, invalid input refused without JSON')
+print('Symbols schema passed: six packages, one contract, invalid input refused without JSON')
