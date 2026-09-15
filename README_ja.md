@@ -49,15 +49,15 @@ gramide version                   何から作られたか: バイナリ、エ�
 | [gramide-go](https://github.com/O6lvl4/gramide-go) | Go `.go` | `gramide_go` |
 | [gramide-rust](https://github.com/O6lvl4/gramide-rust) | Rust `.rs` | `gramide_rust` |
 | [gramide-python](https://github.com/O6lvl4/gramide-python) | Python 3.14 `.py` `.pyi` | `gramide_python` |
-| [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript `.js` `.mjs` `.cjs` | `gramide_javascript` |
-| [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts` | `gramide_typescript` |
+| [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript(JSX 込み)`.js` `.mjs` `.cjs` `.jsx` | `gramide_javascript` |
+| [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts`、`.tsx` は独立パッケージ | `gramide_typescript` |
 
 各言語パッケージは、字句解析器、値としての文法、その文法をコンパイルしてコミットした表、
 どのノードが名前を宣言するかの規則、テスト、その言語の参照パーサに対するオラクル、そして
 自前の小さなバイナリ（`gramide_go` は Go だけの `gramide`）を持ちます。だから他の言語なしに
 テスト・計測・リリースできます。何をどのコーパスでカバーしているかは各 README にあります。
 
-ここの `src/main.almd` は 6 つを列挙してエンジンに渡すだけ。言語を足すのはそこに 1 行と
+ここの `src/main.almd` は 6 つ(定義としては 7 つ、`.tsx` は TypeScript パッケージの第二の定義)を列挙してエンジンに渡すだけ。言語を足すのはそこに 1 行と
 `almide.toml` に 1 行。あるプロジェクトが使う言語だけを出荷するバイナリは、同じファイルの
 リストを短くしたものです。Almide は静的リンクなので、合成はローダではなくファイルです。
 

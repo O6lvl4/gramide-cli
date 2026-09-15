@@ -18,13 +18,13 @@ import gramide_javascript
 import gramide_typescript
 import env
 
-let VERSION = "0.3.0"
+let VERSION = "0.4.0"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
 fn packages() -> List[package_api.Definition] =
   [gramide_almide.definition(), gramide_go.definition(), gramide_rust.definition(), gramide_python.definition(),
-   gramide_javascript.definition(), gramide_typescript.definition()]
+   gramide_javascript.definition(), gramide_typescript.definition(), gramide_typescript.tsx()]
 
 // `check` and `balance` over many files: eight byte-balanced slices of the
 // file list, checked in parallel and answered in list order. The block stands
@@ -65,9 +65,9 @@ effect fn main() -> Unit = {
 // The composition is checked here, not only when a binary starts: two
 // packages claiming one extension would make every answer about such a file
 // depend on list order.
-test "the four packages register distinct ids and extensions" {
+test "the seven definitions register distinct ids and extensions" {
   let ps = packages()
-  assert_eq(list.map(ps, (d) => d.id), ["almide", "go", "rust", "python"])
+  assert_eq(list.map(ps, (d) => d.id), ["almide", "go", "rust", "python", "javascript", "typescript", "tsx"])
   assert_eq(registry.conflict(ps), none)
   assert(list.all(ps, (d) => list.contains(d.capabilities, "check") and list.contains(d.capabilities, "symbols")))
 }

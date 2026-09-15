@@ -19,6 +19,8 @@ with tempfile.TemporaryDirectory() as tmp:
         "almd": "fn real() -> Int = 1\n",
         "js": "export function real() { return /re/.test(x) }\n",
         "ts": "export function real<T>(x: T): T { return x }\n",
+        "jsx": "export function real() { return <p>{x}</p> }\n",
+        "tsx": "export function real<T>({ x }: { x: T }) { return <Box<T> x={x} /> }\n",
     }.items():
         source = root / ("valid." + ext)
         source.write_text(text)
@@ -27,4 +29,4 @@ with tempfile.TemporaryDirectory() as tmp:
         broken = root / ("broken." + ext)
         broken.write_text(text + "}\n")
         run("check", broken, code=1)
-print("CLI smoke passed: six language outlines and syntax rejection")
+print("CLI smoke passed: outlines and syntax rejection across all seven definitions")

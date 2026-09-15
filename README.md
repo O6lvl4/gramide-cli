@@ -52,8 +52,8 @@ tree-sitter is a runtime, one repository per grammar, and `tree-sitter-cli`.
 | [gramide-go](https://github.com/O6lvl4/gramide-go) | Go `.go` | `gramide_go` |
 | [gramide-rust](https://github.com/O6lvl4/gramide-rust) | Rust `.rs` | `gramide_rust` |
 | [gramide-python](https://github.com/O6lvl4/gramide-python) | Python 3.14 `.py` `.pyi` | `gramide_python` |
-| [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript `.js` `.mjs` `.cjs` | `gramide_javascript` |
-| [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts` | `gramide_typescript` |
+| [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript with JSX `.js` `.mjs` `.cjs` `.jsx` | `gramide_javascript` |
+| [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts`, and `.tsx` as its own package | `gramide_typescript` |
 
 Each language package holds its lexer, its grammar as a value, that grammar
 compiled and committed as a table, the rules that say which of its nodes declare
@@ -62,7 +62,8 @@ a small binary of its own — `gramide_go` is `gramide` over Go alone — so the
 package is tested, measured and released without the others. What each one
 covers, on which corpus, is in its README.
 
-`src/main.almd` here lists the six and hands them to the engine. Adding a
+`src/main.almd` here lists the six (seven definitions, `.tsx` being the
+TypeScript package's second) and hands them to the engine. Adding a
 language is one line there and one in `almide.toml`; a binary that ships only
 the languages a project uses is the same file with a shorter list. Almide links
 statically, which is why the composition is a file and not a loader.
@@ -112,7 +113,7 @@ Rust binary's startup moves further from its floor under load, and the
 
 `bash ci/check.sh` builds the binary and runs the cross-language smoke test,
 the package discovery contract (`gramide languages`) and the `symbols` schema
-contract over all six packages ([ci/README.md](ci/README.md)). Everything
+contract over all seven definitions ([ci/README.md](ci/README.md)). Everything
 about one language is checked in that language's repository.
 
 ## License
