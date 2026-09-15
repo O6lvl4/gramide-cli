@@ -2,7 +2,8 @@
 // language package, composed here and nowhere else.
 //
 // The engine is gramide, and a language is a package of its own —
-// gramide_almide, gramide_go, gramide_rust, gramide_python — each with its
+// gramide_almide, gramide_go, gramide_rust, gramide_python, gramide_javascript,
+// gramide_typescript — each with its
 // grammar, its compiled table, its tests and its own binary. This file says
 // which of them this binary ships. Adding a language is one line in
 // `packages()` and one in almide.toml.
@@ -13,14 +14,17 @@ import gramide_almide
 import gramide_go
 import gramide_rust
 import gramide_python
+import gramide_javascript
+import gramide_typescript
 import env
 
-let VERSION = "0.2.2"
+let VERSION = "0.3.0"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
 fn packages() -> List[package_api.Definition] =
-  [gramide_almide.definition(), gramide_go.definition(), gramide_rust.definition(), gramide_python.definition()]
+  [gramide_almide.definition(), gramide_go.definition(), gramide_rust.definition(), gramide_python.definition(),
+   gramide_javascript.definition(), gramide_typescript.definition()]
 
 // `check` and `balance` over many files: eight byte-balanced slices of the
 // file list, checked in parallel and answered in list order. The block stands
