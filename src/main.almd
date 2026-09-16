@@ -18,7 +18,7 @@ import gramide_javascript
 import gramide_typescript
 import env
 
-let VERSION = "0.4.3"
+let VERSION = "0.4.4"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
