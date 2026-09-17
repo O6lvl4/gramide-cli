@@ -18,7 +18,7 @@ import gramide_javascript
 import gramide_typescript
 import env
 
-let VERSION = "0.4.10"
+let VERSION = "0.4.11"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
@@ -57,8 +57,8 @@ effect fn parallel(cmd: String, paths: List[String]) -> List[cli.Chunk] = {
 effect fn main() -> Unit = {
   let argv = env.args()
   match cli.batch_of(argv) {
-    some((cmd, paths)) => cli.report(parallel(cmd, paths)!),
-    none => cli.run(cli.Program { name: "gramide", version: VERSION, packages: packages() }, argv),
+    some((cmd, paths)) => cli.report(parallel(cmd, paths)!)!,
+    none => cli.run(cli.Program { name: "gramide", version: VERSION, packages: packages() }, argv)!,
   }
 }
 
