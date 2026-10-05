@@ -17,7 +17,7 @@ gramide symbols src/main.almd     名前・所有者・行と byte の範囲を�
 gramide symbols-recovered a.py    同じものを回復パースの上で。対応するパッケージだけ
 gramide parse   src/main.almd     木全体を S 式で
 gramide tags    src/main.almd     `def function parse L40-58`、`ref call list.map L44`、`ref type Node L12` — リポジトリマップの入力
-gramide balance Widget.java       括弧とリテラルだけ。文法のない言語向け:
+gramide balance Widget.cpp       括弧とリテラルだけ。文法のない言語向け:
                                   セミコロン抜けは見えないが、正しいコードを拒否することもない
 gramide tokens  src/main.almd     トークン列を一行ずつ
 gramide map . --budget 1024 --task "fix parse_rule"
@@ -37,9 +37,10 @@ gramide version                   何から作られたか: バイナリ、エ�
 
 ## 構成
 
-このリポジトリは 1 ファイルです。全言語パッケージを合成するバイナリ。エンジンと各言語は
-それぞれ独立したリポジトリにあります。tree-sitter がランタイム、文法ごとのリポジトリ、そして
-`tree-sitter-cli` からなるのと同じ形です。
+このリポジトリは言語パッケージを合成する薄い CLI です。エンジンも 14 個の言語パッケージも、
+すべて独立したリポジトリにあります。各 `gramide-*` が manifest、字句解析器、文法、生成表、
+テスト、単体 CLI、Quality ワークフローを所有します。CLI は git 依存で参照し、正確なコミットを
+`almide.lock` に記録します。ここに文法ソースは同梱しません。
 
 | パッケージ | 内容 | |
 |---|---|---|
@@ -51,13 +52,21 @@ gramide version                   何から作られたか: バイナリ、エ�
 | [gramide-python](https://github.com/O6lvl4/gramide-python) | Python 3.14 `.py` `.pyi` | `gramide_python` |
 | [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript(JSX 込み)`.js` `.mjs` `.cjs` `.jsx` | `gramide_javascript` |
 | [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts`、`.tsx` は独立パッケージ | `gramide_typescript` |
+| [JSON](https://github.com/O6lvl4/gramide-json) | JSON `.json`; 構文検査対応 | `gramide_json` |
+| [TOML](https://github.com/O6lvl4/gramide-toml) | TOML 1.0 コア構文の読み取り `.toml` | `gramide_toml` |
+| [CSS](https://github.com/O6lvl4/gramide-css) | CSS コア構文の読み取り `.css` | `gramide_css` |
+| [SQL](https://github.com/O6lvl4/gramide-sql) | SQL コア構文の読み取り `.sql` | `gramide_sql` |
+| [Lua](https://github.com/O6lvl4/gramide-lua) | Lua コア構文の読み取り `.lua` | `gramide_lua` |
+| [C](https://github.com/O6lvl4/gramide-c) | C コア構文の読み取り `.c` `.h` | `gramide_c` |
+| [Java](https://github.com/O6lvl4/gramide-java) | Java コア構文の読み取り `.java` | `gramide_java` |
+| [C#](https://github.com/O6lvl4/gramide-csharp) | C# コア構文の読み取り `.cs` | `gramide_csharp` |
 
 各言語パッケージは、字句解析器、値としての文法、その文法をコンパイルしてコミットした表、
 どのノードが名前を宣言するかの規則、テスト、その言語の参照パーサに対するオラクル、そして
 自前の小さなバイナリ（`gramide_go` は Go だけの `gramide`）を持ちます。だから他の言語なしに
 テスト・計測・リリースできます。何をどのコーパスでカバーしているかは各 README にあります。
 
-ここの `src/main.almd` は 6 つ(定義としては 7 つ、`.tsx` は TypeScript パッケージの第二の定義)を列挙してエンジンに渡すだけ。言語を足すのはそこに 1 行と
+ここの `src/main.almd` は 14 パッケージ、15 定義（`.tsx` は TypeScript の第二の定義）を列挙してエンジンに渡します。言語を足すのはそこに 1 行と
 `almide.toml` に 1 行。あるプロジェクトが使う言語だけを出荷するバイナリは、同じファイルの
 リストを短くしたものです。Almide は静的リンクなので、合成はローダではなくファイルです。
 
@@ -69,12 +78,22 @@ almide install github.com/O6lvl4/gramide-cli --name gramide      # ネイティ�
 
 `--name` が要るのは、Almide がバイナリをパッケージ名で名付け、パッケージ名が `gramide_cli`
 だからです。チェックアウトからは `almide build --release -o gramide` で `./gramide` ができます。
-エンジンと 6 つの言語パッケージは `almide.lock` が記録するコミットで取得されます。Almide 0.62 以降が必要です。
+エンジンと既存 6 パッケージは `almide.lock` のコミットで取得し、新規 8 パッケージも独立した git リポジトリから取得します。Almide 0.62 以降が必要です。
 [hew](https://github.com/O6lvl4/hew) は `PATH` 上の `gramide` を見つけてコードを読みます。
 
 ## 現状
 
-4 パッケージを出荷しています。各パッケージが立てる保証は一方向です。**gramide が拒否する
+登録定義は **7 → 15** になりました。既存 7 定義と JSON は `check` に対応します。
+TOML・CSS・SQL・Lua・C・Java・C# は、実際の文法と構文木を持つ **コア構文の読み取り対応** です。
+全言語仕様への適合や tree-sitter との同等性は主張しません。対応構文と制限は各 README に明記しています。
+これらの言語への `check` は「no language package provides check」として失敗し、
+有効なソースを壊れていると判定する検査器にはなりません。`symbols` は回復済みの木を完全な結果として返さず、
+新規パッケージは `symbols-recovered` を公開しません。
+
+新規 8 パッケージのコーパス全体・性能比較は未確立です。以下の計測は従来のパッケージとバイナリのもので、
+今回の拡張版の計測ではありません。
+
+既存パッケージのコーパス検証は各リポジトリにあります。従来の Almide・Go・Rust・Python の検証が立てる保証は一方向です。**gramide が拒否する
 ファイルは、その言語の参照パーサにとっても壊れている。** それぞれの言語のコーパスで計測し、
 各リポジトリに記録しています。Almide リポジトリの全 `.almd`、`GOROOT/src` 配下の全 `.go`、
 Almide コンパイラの全 `.rs`、そして標準ライブラリ 12 ファイル完全版を含む 645 の Python 宣言を
@@ -97,8 +116,9 @@ Python の `inspect.py` が 0.70 倍、Python 標準ライブラリ全体のパ�
 ## 検査
 
 `bash ci/check.sh` はバイナリをビルドし、言語横断のスモーク、パッケージ発見の契約
-（`gramide languages`）、4 パッケージ全体での `symbols` スキーマ契約を走らせます
-（[ci/README.md](ci/README.md)）。個々の言語に関することは、その言語のリポジトリで検査します。
+（`gramide languages`）、15 定義の `symbols` 契約を走らせます。各言語の文法テスト、生成表、正常・異常 fixture、
+UTF-8 範囲、オラクル検証は各リポジトリの CI が担当します
+（[ci/README.md](ci/README.md)）。ここでは合成と共通スキーマを検証します。
 
 ## ライセンス
 

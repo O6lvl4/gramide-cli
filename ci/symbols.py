@@ -3,6 +3,14 @@ from pathlib import Path
 import json, subprocess, tempfile
 BIN = Path(__file__).resolve().parents[1] / 'gramide'
 FIXTURES = {
+    'json': ('{"real": 1}\n', '"real"'),
+    'toml': ('real = 1\n', 'real'),
+    'css': ('.real { color: red; }\n', '.real'),
+    'sql': ('CREATE TABLE real (id INTEGER);\n', 'real'),
+    'lua': ('local function real(x) return x + 1 end\n', 'real'),
+    'c': ('int real(void) { return 1; }\n', 'real'),
+    'java': ('class Box { int real() { return 1; } }\n', 'Box.real'),
+    'cs': ('class Box { public int real() { return 1; } }\n', 'Box.real'),
     'almd': ('fn real() -> Int = {\n  1\n}\n', 'real'),
     'go': ('package p\n\ntype Shape struct{ w int }\n\nfunc (s *Shape) Area() int { return s.w }\n', 'Shape.Area'),
     'rs': ('impl Box {\n #[inline]\n pub fn read(&self) -> i32 { 1 }\n}\n', 'Box::read'),
@@ -28,4 +36,4 @@ with tempfile.TemporaryDirectory() as tmp:
         broken.write_text(source + ')\n')
         p = subprocess.run([str(BIN), 'symbols', str(broken)], capture_output=True, text=True)
         assert p.returncode != 0 and not p.stdout, (ext, p.stdout, p.stderr)
-print('Symbols schema passed: seven definitions, one contract, invalid input refused without JSON')
+print('Symbols schema passed: fifteen definitions, one contract, invalid input refused without JSON')

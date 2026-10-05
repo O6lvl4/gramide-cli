@@ -11,3 +11,13 @@ gramide_rust = { git = "https://github.com/O6lvl4/gramide-rust", tag = "v0.1.16"
 gramide_python = { git = "https://github.com/O6lvl4/gramide-python", tag = "v0.1.13" }
 gramide_javascript = { git = "https://github.com/O6lvl4/gramide-javascript", tag = "v0.3.13" }
 gramide_typescript = { git = "https://github.com/O6lvl4/gramide-typescript", tag = "v0.3.13" }
+
+# New standalone grammar repositories; exact implementation commits are pinned in almide.lock.
+gramide_json = { git = "https://github.com/O6lvl4/gramide-json", branch = "main" }
+gramide_toml = { git = "https://github.com/O6lvl4/gramide-toml", branch = "main" }
+gramide_css = { git = "https://github.com/O6lvl4/gramide-css", branch = "main" }
+gramide_sql = { git = "https://github.com/O6lvl4/gramide-sql", branch = "main" }
+gramide_lua = { git = "https://github.com/O6lvl4/gramide-lua", branch = "main" }
+gramide_c = { git = "https://github.com/O6lvl4/gramide-c", branch = "main" }
+gramide_java = { git = "https://github.com/O6lvl4/gramide-java", branch = "main" }
+gramide_csharp = { git = "https://github.com/O6lvl4/gramide-csharp", branch = "main" }

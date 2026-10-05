@@ -18,7 +18,7 @@ gramide symbols src/main.almd     versioned JSON names, owners, line and byte ra
 gramide symbols-recovered a.py    the same over a recovered parse, where a package offers it
 gramide parse   src/main.almd     the whole tree as an s-expression
 gramide tags    src/main.almd     `def function parse L40-58`, `ref call list.map L44`, `ref type Node L12` — a repo map's input
-gramide balance Widget.java       delimiters and literals only, for a language with no grammar here:
+gramide balance Widget.cpp       delimiters and literals only, for a language with no grammar here:
                                   it cannot see a missing semicolon, and it cannot reject valid code
 gramide tokens  src/main.almd     the token stream, one per line
 gramide map . --budget 1024 --task "fix parse_rule"
@@ -40,9 +40,11 @@ written in, so a grammar can be read, patched and tested like any other module.
 
 ## How it is put together
 
-This repository is one file: the binary that composes every language package.
-The engine and each language live in repositories of their own, the way
-tree-sitter is a runtime, one repository per grammar, and `tree-sitter-cli`.
+This repository is the thin binary that composes independent language packages.
+The engine and all fourteen language packages live in repositories of their own.
+Each grammar repository owns its scanner, grammar value, compiled table, tests,
+standalone CLI and Quality workflow. The CLI depends on them through git; the
+exact source commits belong in `almide.lock`. No language source is vendored here.
 
 | package | what it is | |
 |---|---|---|
@@ -54,6 +56,14 @@ tree-sitter is a runtime, one repository per grammar, and `tree-sitter-cli`.
 | [gramide-python](https://github.com/O6lvl4/gramide-python) | Python 3.14 `.py` `.pyi` | `gramide_python` |
 | [gramide-javascript](https://github.com/O6lvl4/gramide-javascript) | JavaScript with JSX `.js` `.mjs` `.cjs` `.jsx` | `gramide_javascript` |
 | [gramide-typescript](https://github.com/O6lvl4/gramide-typescript) | TypeScript 5.9 `.ts` `.mts` `.cts`, and `.tsx` as its own package | `gramide_typescript` |
+| [JSON](https://github.com/O6lvl4/gramide-json) | JSON `.json`; strict syntax check | `gramide_json` |
+| [TOML](https://github.com/O6lvl4/gramide-toml) | TOML 1.0 core reader `.toml` | `gramide_toml` |
+| [CSS](https://github.com/O6lvl4/gramide-css) | CSS core reader `.css` | `gramide_css` |
+| [SQL](https://github.com/O6lvl4/gramide-sql) | SQL core reader `.sql` | `gramide_sql` |
+| [Lua](https://github.com/O6lvl4/gramide-lua) | Lua core reader `.lua` | `gramide_lua` |
+| [C](https://github.com/O6lvl4/gramide-c) | C core reader `.c` `.h` | `gramide_c` |
+| [Java](https://github.com/O6lvl4/gramide-java) | Java core reader `.java` | `gramide_java` |
+| [C#](https://github.com/O6lvl4/gramide-csharp) | C# core reader `.cs` | `gramide_csharp` |
 
 Each language package holds its lexer, its grammar as a value, that grammar
 compiled and committed as a table, the rules that say which of its nodes declare
@@ -62,8 +72,8 @@ a small binary of its own — `gramide_go` is `gramide` over Go alone — so the
 package is tested, measured and released without the others. What each one
 covers, on which corpus, is in its README.
 
-`src/main.almd` here lists the six (seven definitions, `.tsx` being the
-TypeScript package's second) and hands them to the engine. Adding a
+`src/main.almd` lists fourteen packages and fifteen definitions (`.tsx` is the
+TypeScript package's second definition), and hands them to the engine. Adding a
 language is one line there and one in `almide.toml`; a binary that ships only
 the languages a project uses is the same file with a shorter list. Almide links
 statically, which is why the composition is a file and not a loader.
@@ -76,14 +86,29 @@ almide install github.com/O6lvl4/gramide-cli --name gramide      # one native bi
 
 `--name` because Almide names a binary after its package, and the package is
 `gramide_cli`. From a checkout, `almide build --release -o gramide` writes
-`./gramide`, fetching the engine and the six language packages at the
-commits `almide.lock` records. Requires Almide 0.62 or
-later. [hew](https://github.com/O6lvl4/hew) finds `gramide` on `PATH` and reads
+`./gramide`, fetching the engine and all fourteen language packages at the
+commits `almide.lock` records.
+Requires Almide 0.62 or later; the full check suite uses Python 3.11+. [hew](https://github.com/O6lvl4/hew) finds `gramide` on `PATH` and reads
 code through it.
 
 ## Status
 
-Four packages ship. The guarantee each establishes runs one way: **a file
+There are now **15 registered definitions** (previously 7). Coverage levels are
+explicit: the seven established definitions and JSON offer `check`; TOML, CSS,
+SQL, Lua, C, Java and C# are **core readers**. They produce actual syntax trees,
+structured symbols and outlines for documented syntax, but do not claim full
+language conformance or tree-sitter parity. Their READMEs enumerate supported
+constructs and limits. A `check` request for a core reader fails with
+`no language package provides check`; that is a capability limit, not a
+claim that the source is broken. `symbols` never exports a recovered tree as
+complete, and the new packages do not advertise `symbols-recovered`.
+
+No performance or whole-corpus comparison has yet been established for these
+eight new packages. The measurements below concern the previously published
+packages and binary, not the expanded binary.
+
+The established language packages report their corpus evidence in their own
+repositories. The original Almide/Go/Rust/Python checks establish a one-way guarantee: **a file
 gramide rejects is broken for the language's reference parser too**, measured
 on that language's corpus and recorded in its repository — every `.almd` file
 in the Almide repository, every `.go` file under `GOROOT/src`, every `.rs`
@@ -113,8 +138,10 @@ Rust binary's startup moves further from its floor under load, and the
 
 `bash ci/check.sh` builds the binary and runs the cross-language smoke test,
 the package discovery contract (`gramide languages`) and the `symbols` schema
-contract over all seven definitions ([ci/README.md](ci/README.md)). Everything
-about one language is checked in that language's repository.
+contract over all fifteen definitions. Each grammar repository separately runs its scanner/grammar tests, deterministic
+table checks, valid/malformed source fixtures and applicable oracle comparisons.
+This repository verifies their composition and shared symbol schema
+([ci/README.md](ci/README.md)).
 
 ## License
 

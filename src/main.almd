@@ -3,8 +3,8 @@
 //
 // The engine is gramide, and a language is a package of its own —
 // gramide_almide, gramide_go, gramide_rust, gramide_python, gramide_javascript,
-// gramide_typescript — each with its
-// grammar, its compiled table, its tests and its own binary. This file says
+// gramide_typescript and the independent gramide-* repositories — each
+// with its grammar, compiled table, tests and binary. This file says
 // which of them this binary ships. Adding a language is one line in
 // `packages()` and one in almide.toml.
 import gramide.cli
@@ -16,6 +16,14 @@ import gramide_rust
 import gramide_python
 import gramide_javascript
 import gramide_typescript
+import gramide_json
+import gramide_toml
+import gramide_css
+import gramide_sql
+import gramide_lua
+import gramide_c
+import gramide_java
+import gramide_csharp
 import env
 
 let VERSION = "0.4.16"
@@ -24,7 +32,8 @@ let VERSION = "0.4.16"
 // carry a package, because its lexer is a closure.
 fn packages() -> List[package_api.Definition] =
   [gramide_almide.definition(), gramide_go.definition(), gramide_rust.definition(), gramide_python.definition(),
-   gramide_javascript.definition(), gramide_typescript.definition(), gramide_typescript.tsx()]
+   gramide_javascript.definition(), gramide_typescript.definition(), gramide_typescript.tsx(),
+   gramide_json.definition(), gramide_toml.definition(), gramide_css.definition(), gramide_sql.definition(), gramide_lua.definition(), gramide_c.definition(), gramide_java.definition(), gramide_csharp.definition()]
 
 // `check` and `balance` over many files: eight byte-balanced slices of the
 // file list, checked in parallel and answered in list order. The block stands
@@ -65,9 +74,11 @@ effect fn main() -> Unit = {
 // The composition is checked here, not only when a binary starts: two
 // packages claiming one extension would make every answer about such a file
 // depend on list order.
-test "the seven definitions register distinct ids and extensions" {
+test "the fifteen definitions register distinct ids and extensions" {
   let ps = packages()
-  assert_eq(list.map(ps, (d) => d.id), ["almide", "go", "rust", "python", "javascript", "typescript", "tsx"])
+  assert_eq(list.map(ps, (d) => d.id), ["almide", "go", "rust", "python", "javascript", "typescript", "tsx", "json", "toml", "css", "sql", "lua", "c", "java", "csharp"])
   assert_eq(registry.conflict(ps), none)
-  assert(list.all(ps, (d) => list.contains(d.capabilities, "check") and list.contains(d.capabilities, "symbols")))
+  assert(list.all(ps, (d) => list.contains(d.capabilities, "symbols")))
+  let gates = ["almide", "go", "rust", "python", "javascript", "typescript", "tsx", "json"]
+  assert_eq(list.map(list.filter(ps, (d) => list.contains(d.capabilities, "check")), (d) => d.id), gates)
 }
