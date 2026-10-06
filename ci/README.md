@@ -16,3 +16,9 @@ No full-language or tree-sitter-parity claim follows from composition tests.
 
 The existing Quality workflow pins Almide to
 `dff9a458f2e581631bb6537c856a7974036e4153` and Rust to `1.94.0`.
+
+The current lockfile selects merged engine parent-window/node-identity fixes,
+JSON missing-closer recovery, and Java qualified `TypeName.this` parsing. The
+engine uses an exact main-branch commit because the v0.2.11 tag predates those
+fixes. Opt-in paired-head recovery remains in separate draft PRs and is not
+selected by these pins.
