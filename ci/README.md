@@ -22,3 +22,8 @@ JSON missing-closer recovery, and Java qualified `TypeName.this` parsing. The
 engine uses an exact main-branch commit because the v0.2.11 tag predates those
 fixes. Opt-in paired-head recovery remains in separate draft PRs and is not
 selected by these pins.
+
+Branch dependencies declare the actual core version (`0.2.11`) as well as their
+ref. This keeps Almide's compatibility identity aligned with the established
+grammars' `v0.2.11` requirement. CI also requires the lockfile to stay byte-identical
+through fetching, tests and the build.
