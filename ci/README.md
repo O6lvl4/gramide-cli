@@ -1,17 +1,18 @@
-# Reproducible checks
+# Reproducible composition checks
 
-Run `bash ci/check.sh` from a checkout with Almide installed, or set
-`ALMIDE_BIN` to an absolute compiler path. This builds `gramide` (`almide build --release -o gramide`) — fetching
-the engine and the four language packages at the commits `almide.lock`
-records — and checks the built CLI against temporary fixtures: one file per
-language through `check` and `outline`, the discovery contract of
-`gramide languages`, and the `symbols` schema over every package. No model API
-or credentials are used.
+Run `bash ci/check.sh` with Almide installed, or set `ALMIDE_BIN` to its absolute
+path. The CLI reads the engine and fourteen independent grammar repositories at
+the commits pinned in `almide.lock`; it contains no grammar source.
 
-Everything about one language — its grammar tests, its corpus, its oracle
-against the reference parser — is checked in that language's own repository,
-by its own binary. This repository checks only that the composition holds.
+The checks run the explicit CLI test root, build the native binary, retain the
+seven established-definition smoke checks, verify all fifteen manifest entries
+and capability boundaries, and exercise the common strict-symbols schema across
+all fifteen definitions. A malformed file must not emit complete symbol JSON.
 
-CI pins Almide to `dff9a458f2e581631bb6537c856a7974036e4153` and Rust to
-`1.94.0`. Upgrade these deliberately and rerun the checks together. The compiler
-binary cache is keyed by both versions.
+Each grammar repository owns its scanner/grammar tests, generated-table check,
+source corpus, byte-range checks and applicable reference-parser oracle. New core
+readers deliberately omit `check` and `symbols-recovered`; JSON adds syntax check.
+No full-language or tree-sitter-parity claim follows from composition tests.
+
+The existing Quality workflow pins Almide to
+`dff9a458f2e581631bb6537c856a7974036e4153` and Rust to `1.94.0`.
