@@ -3,11 +3,17 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 compiler="${ALMIDE_BIN:-almide}"
 
+# Fetching/building must not silently change the selected dependency commits.
+lock_snapshot="$(mktemp)"
+trap 'rm -f "$lock_snapshot"' EXIT
+cp almide.lock "$lock_snapshot"
+
 "$compiler" test src/main.almd
 "$compiler" build --release -o gramide
 python3 ci/smoke.py
 python3 ci/packages.py
 python3 ci/symbols.py
+cmp almide.lock "$lock_snapshot"
 
 # A per-file ratchet, not a target. Each file is held where it stands, so a
 # clean one cannot rot up to the worst one. Numbers only ever fall;
