@@ -21,3 +21,8 @@ gramide_lua = { git = "https://github.com/O6lvl4/gramide-lua", branch = "main" }
 gramide_c = { git = "https://github.com/O6lvl4/gramide-c", branch = "main" }
 gramide_java = { git = "https://github.com/O6lvl4/gramide-java", branch = "main" }
 gramide_csharp = { git = "https://github.com/O6lvl4/gramide-csharp", branch = "main" }
+
+# Dialect epoch 15 (#4093): a git dependency outside github.com/almide is fetched only
+# from an owner the root manifest trusts.
+[trust]
+owners = ["github.com/O6lvl4"]
