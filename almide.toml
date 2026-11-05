@@ -1,23 +1,26 @@
 [package]
 name = "gramide_cli"
-version = "0.4.16"
+version = "0.4.17"
 edition = "2026"
 
 [dependencies]
-gramide = { git = "https://github.com/O6lvl4/gramide", branch = "main", version = "0.2.11" }
-gramide_almide = { git = "https://github.com/O6lvl4/gramide-almide", tag = "v0.1.14" }
-gramide_go = { git = "https://github.com/O6lvl4/gramide-go", tag = "v0.1.14" }
-gramide_rust = { git = "https://github.com/O6lvl4/gramide-rust", tag = "v0.1.16" }
-gramide_python = { git = "https://github.com/O6lvl4/gramide-python", tag = "v0.1.13" }
-gramide_javascript = { git = "https://github.com/O6lvl4/gramide-javascript", tag = "v0.3.13" }
-gramide_typescript = { git = "https://github.com/O6lvl4/gramide-typescript", tag = "v0.3.13" }
+gramide = { git = "https://github.com/O6lvl4/gramide", tag = "v0.2.12" }
+gramide_almide = { git = "https://github.com/O6lvl4/gramide-almide", tag = "v0.1.15" }
+gramide_go = { git = "https://github.com/O6lvl4/gramide-go", tag = "v0.1.15" }
+gramide_rust = { git = "https://github.com/O6lvl4/gramide-rust", tag = "v0.1.17" }
+gramide_python = { git = "https://github.com/O6lvl4/gramide-python", tag = "v0.1.14" }
+gramide_javascript = { git = "https://github.com/O6lvl4/gramide-javascript", tag = "v0.3.14" }
+gramide_typescript = { git = "https://github.com/O6lvl4/gramide-typescript", tag = "v0.3.14" }
 
 # New standalone grammar repositories; exact implementation commits are pinned in almide.lock.
-gramide_json = { git = "https://github.com/O6lvl4/gramide-json", branch = "main" }
-gramide_toml = { git = "https://github.com/O6lvl4/gramide-toml", branch = "main" }
-gramide_css = { git = "https://github.com/O6lvl4/gramide-css", branch = "main" }
-gramide_sql = { git = "https://github.com/O6lvl4/gramide-sql", branch = "main" }
-gramide_lua = { git = "https://github.com/O6lvl4/gramide-lua", branch = "main" }
-gramide_c = { git = "https://github.com/O6lvl4/gramide-c", branch = "main" }
-gramide_java = { git = "https://github.com/O6lvl4/gramide-java", branch = "main" }
-gramide_csharp = { git = "https://github.com/O6lvl4/gramide-csharp", branch = "main" }
+gramide_json = { git = "https://github.com/O6lvl4/gramide-json", tag = "v0.1.1" }
+gramide_toml = { git = "https://github.com/O6lvl4/gramide-toml", tag = "v0.1.1" }
+gramide_css = { git = "https://github.com/O6lvl4/gramide-css", tag = "v0.1.1" }
+gramide_sql = { git = "https://github.com/O6lvl4/gramide-sql", tag = "v0.1.1" }
+gramide_lua = { git = "https://github.com/O6lvl4/gramide-lua", tag = "v0.1.1" }
+gramide_c = { git = "https://github.com/O6lvl4/gramide-c", tag = "v0.1.1" }
+gramide_java = { git = "https://github.com/O6lvl4/gramide-java", tag = "v0.1.1" }
+gramide_csharp = { git = "https://github.com/O6lvl4/gramide-csharp", tag = "v0.1.1" }
+
+[trust]
+owners = ["github.com/o6lvl4"]
