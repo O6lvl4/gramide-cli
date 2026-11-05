@@ -26,7 +26,7 @@ import gramide_java
 import gramide_csharp
 import env
 
-let VERSION = "0.4.16"
+let VERSION = "0.4.17"
 
 // Every package this binary ships, built by name: a `fan` arm below cannot
 // carry a package, because its lexer is a closure.
